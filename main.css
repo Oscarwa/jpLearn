@@ -1,0 +1,29 @@
+.main * {
+  border: 1px solid red;
+}
+.main {
+  display: flex;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.container {
+  flex: 1;
+}
+
+.box {
+  height: 2em;
+  width: 1.5em;
+}
+
+.row  {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.images .box {
+  float: left;
+  text-align: center;
+  margin: 2px;
+  padding: 3px;
+}

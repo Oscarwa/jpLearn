@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Learn Hiragana</title>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    <div class="main">
+      <div class=" container boxes">
+        <div class="row">
+          <div class="dropbox box">
+            <span>KA</span>
+          </div>
+          <div class="dropbox box">
+
+          </div>
+          <div class="dropbox box">
+
+          </div>
+          <div class="dropbox box">
+
+          </div>
+          <div class="dropbox box">
+
+          </div>
+        </div>
+      </div>
+      <div id="hiraganas" class="container images">
+        <div draggable="true" class="dragbox box">あ</div>
+        <span class="dragbox box">い</span>
+        <span class="dragbox box">う</span>
+        <span class="dragbox box">え</span>
+        <span class="dragbox box">お</span>
+        <span class="dragbox box">お</span>
+        <span class="dragbox box">か</span>
+        <span class="dragbox box">き</span>
+        <span class="dragbox box">く</span>
+      </div>
+    </div>
+    <script>
+      const hiraganaStart = 12353;//3041;
+      const hiraganaEnd = 12447;//3096;
+      const hiraganaContainer = document.getElementById('hiraganas');
+      blackList = [12353, 12355, 12357, 12359, 12361]
+
+      let newSpan = '';
+      for(let i = hiraganaStart; i < hiraganaEnd; i++) {
+        if(!blackList.includes(i)) {
+          newSpan += `<span draggable="true" class="dragbox box">&#${i};</span>`
+        }
+      }
+      hiraganaContainer.innerHTML = newSpan;
+    </script>
+  </body>
+</html>
