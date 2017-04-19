@@ -27,33 +27,125 @@
         </div>
       </div>
       <div id="hiraganas" class="container images">
-        <div draggable="true" class="dragbox box">あ</div>
-        <span class="dragbox box">い</span>
-        <span class="dragbox box">う</span>
-        <span class="dragbox box">え</span>
-        <span class="dragbox box">お</span>
-        <span class="dragbox box">お</span>
-        <span class="dragbox box">か</span>
-        <span class="dragbox box">き</span>
-        <span class="dragbox box">く</span>
       </div>
     </div>
     <script>
       const hiraganaStart = 12353;//3041;
       const hiraganaEnd = 12447;//3096;
       const hiraganaContainer = document.getElementById('hiraganas');
-      blackList = [12353, 12355, 12357, 12359, 12361]
+      blackList = []// [12353, 12355, 12357, 12359, 12361, 12387,12419,12421,12423,12430,12433,12437,12438,12439,12440,12441,12442,12443,12444,12445,12446]
 
       let newSpan = '';
+      let arr = [];
       for(let i = hiraganaStart; i < hiraganaEnd; i++) {
         if(!blackList.includes(i)) {
-          newSpan += `<span draggable="true" class="dragbox box">&#${i};</span>`
+          newSpan += `<span draggable class="dragbox box" title="${i}">&#${i};</span>`
+          arr.push({code: i, sound: '', hiragana: String.fromCharCode(i)})
         }
       }
+      console.log(JSON.stringify(arr));
       hiraganaContainer.innerHTML = newSpan;
 
       //https://www.key-shortcut.com/en/writing-systems/%E3%81%B2%E3%82%89%E3%81%8C%E3%81%AA-japanese/
       //http://jrgraphix.net/r/Unicode/3040-309F
+
+      let hiragana = [
+        {"code":12354,"sound":"A","hiragana":"あ"},
+        {"code":12356,"sound":"I","hiragana":"い"},
+        {"code":12358,"sound":"U","hiragana":"う"},
+        {"code":12360,"sound":"E","hiragana":"え"},
+        {"code":12362,"sound":"O","hiragana":"お"},
+        {"code":12363,"sound":"KA","hiragana":"か"},
+        {"code":12364,"sound":"GA","hiragana":"が"},
+        {"code":12365,"sound":"KI","hiragana":"き"},
+        {"code":12366,"sound":"GI","hiragana":"ぎ"},
+        {"code":12367,"sound":"KU","hiragana":"く"},
+        {"code":12368,"sound":"GU","hiragana":"ぐ"},
+        {"code":12369,"sound":"KE","hiragana":"け"},
+        {"code":12370,"sound":"GE","hiragana":"げ"},
+        {"code":12371,"sound":"KO","hiragana":"こ"},
+        {"code":12372,"sound":"GO","hiragana":"ご"},
+        {"code":12373,"sound":"SA","hiragana":"さ"},
+        {"code":12374,"sound":"ZA","hiragana":"ざ"},
+        {"code":12375,"sound":"SHI","hiragana":"し"},
+        {"code":12376,"sound":"JI","hiragana":"じ"},
+        {"code":12377,"sound":"SU","hiragana":"す"},
+        {"code":12378,"sound":"ZU","hiragana":"ず"},
+        {"code":12379,"sound":"SE","hiragana":"せ"},
+        {"code":12380,"sound":"ZE","hiragana":"ぜ"},
+        {"code":12381,"sound":"SO","hiragana":"そ"},
+        {"code":12382,"sound":"ZO","hiragana":"ぞ"},
+        {"code":12383,"sound":"TA","hiragana":"た"},
+        {"code":12384,"sound":"DA","hiragana":"だ"},
+        {"code":12385,"sound":"CHI","hiragana":"ち"},
+        {"code":12386,"sound":"JI","hiragana":"ぢ"},
+        {"code":12388,"sound":"TSU","hiragana":"つ"},
+        {"code":12389,"sound":"ZU","hiragana":"づ"},
+        {"code":12390,"sound":"TE","hiragana":"て"},
+        {"code":12391,"sound":"DE","hiragana":"で"},
+        {"code":12392,"sound":"TO","hiragana":"と"},
+        {"code":12393,"sound":"DO","hiragana":"ど"},
+        {"code":12394,"sound":"NA","hiragana":"な"},
+        {"code":12395,"sound":"NI","hiragana":"に"},
+        {"code":12396,"sound":"NU","hiragana":"ぬ"},
+        {"code":12397,"sound":"NE","hiragana":"ね"},
+        {"code":12398,"sound":"NO","hiragana":"の"},
+        {"code":12399,"sound":"HA","hiragana":"は"},
+        {"code":12400,"sound":"BA","hiragana":"ば"},
+        {"code":12401,"sound":"PA","hiragana":"ぱ"},
+        {"code":12402,"sound":"HI","hiragana":"ひ"},
+        {"code":12403,"sound":"BI","hiragana":"び"},
+        {"code":12404,"sound":"PI","hiragana":"ぴ"},
+        {"code":12405,"sound":"FU","hiragana":"ふ"},
+        {"code":12406,"sound":"BU","hiragana":"ぶ"},
+        {"code":12407,"sound":"PU","hiragana":"ぷ"},
+        {"code":12408,"sound":"HE","hiragana":"へ"},
+        {"code":12409,"sound":"BE","hiragana":"べ"},
+        {"code":12410,"sound":"PE","hiragana":"ぺ"},
+        {"code":12411,"sound":"HO","hiragana":"ほ"},
+        {"code":12412,"sound":"BO","hiragana":"ぼ"},
+        {"code":12413,"sound":"PO","hiragana":"ぽ"},
+        {"code":12414,"sound":"MA","hiragana":"ま"},
+        {"code":12415,"sound":"MI","hiragana":"み"},
+        {"code":12416,"sound":"MU","hiragana":"む"},
+        {"code":12417,"sound":"ME","hiragana":"め"},
+        {"code":12418,"sound":"MO","hiragana":"も"},
+        {"code":12420,"sound":"YA","hiragana":"や"},
+        {"code":12422,"sound":"YU","hiragana":"ゆ"},
+        {"code":12424,"sound":"YO","hiragana":"よ"},
+        {"code":12425,"sound":"RA","hiragana":"ら"},
+        {"code":12426,"sound":"RI","hiragana":"り"},
+        {"code":12427,"sound":"RU","hiragana":"る"},
+        {"code":12428,"sound":"RE","hiragana":"れ"},
+        {"code":12429,"sound":"RO","hiragana":"ろ"},
+        {"code":12431,"sound":"WA","hiragana":"わ"},
+        {"code":12434,"sound":"WO","hiragana":"を"},
+        {"code":12435,"sound":"N","hiragana":"ん"},
+        {"code":12419,"sound":"KYA","hiragana":"きゃ"},
+        {"code":12419,"sound":"KYU","hiragana":"きゅ"},
+        {"code":12419,"sound":"KYO","hiragana":"きょ"},
+        {"code":12419,"sound":"GYA","hiragana":"ぎゃ"},
+        {"code":12419,"sound":"GYU","hiragana":"ぎゅ"},
+        {"code":12419,"sound":"GYO","hiragana":"ぎょ"},
+        {"code":12419,"sound":"NYA","hiragana":"にゃ"},
+        {"code":12419,"sound":"NYU","hiragana":"にゅ"},
+        {"code":12419,"sound":"NYO","hiragana":"にょ"},
+        {"code":12419,"sound":"HYA","hiragana":"ひゃ"},
+        {"code":12419,"sound":"HYU","hiragana":"ひゅ"},
+        {"code":12419,"sound":"HYO","hiragana":"ひょ"},
+        {"code":12419,"sound":"BYA","hiragana":"びゃ"},
+        {"code":12419,"sound":"BYU","hiragana":"びゅ"},
+        {"code":12419,"sound":"BYO","hiragana":"びょ"},
+        {"code":12419,"sound":"PYA","hiragana":"ぴゃ"},
+        {"code":12419,"sound":"PYU","hiragana":"ぴゅ"},
+        {"code":12419,"sound":"PYO","hiragana":"ぴょ"},
+        {"code":12419,"sound":"MYA","hiragana":"みゃ"},
+        {"code":12419,"sound":"MYU","hiragana":"みゅ"},
+        {"code":12419,"sound":"MYO","hiragana":"みょ"},
+        {"code":12419,"sound":"RYA","hiragana":"りゃ"},
+        {"code":12419,"sound":"RYU","hiragana":"りゅ"},
+        {"code":12419,"sound":"RYO","hiragana":"りょ"},
+      ];
     </script>
   </body>
 </html>
