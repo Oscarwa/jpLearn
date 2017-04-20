@@ -161,9 +161,15 @@
       ];
 
       hiragana.forEach(item => {
-        newSpan += `<div draggable="true" id="${item.sound}" ondragstart="drag(event)" class="dragbox box" title="${item.sound}"><span>${item.hiragana}</span></div>`
         dropSpan += `<div class="dropbox box" ondrop="drop(event)" ondragover="allowDrop(event)" data-code="${item.sound}">${item.sound}</div>`
-      })
+      });
+
+      while(hiragana.length) {
+        let rnd = Math.floor(Math.random() * hiragana.length);
+        let item = hiragana[rnd];
+        newSpan += `<div draggable="true" id="${item.sound}" ondragstart="drag(event)" class="dragbox box" title="${item.sound}"><span>${item.hiragana}</span></div>`
+        hiragana.splice(rnd, 1);
+      }
       // for(let i = hiraganaStart; i < hiraganaEnd; i++) {
       //   if(!blackList.includes(i)) {
       //     newSpan += `<span draggable="true" class="dragbox box" title="${i}">&#${i};</span>`
