@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="main">
-      <div class=" container boxes">
+      <div id="boxes" class="container boxes">
         <div class="row">
           <div class="dropbox box">
             <span>KA</span>
@@ -33,77 +33,90 @@
       const hiraganaStart = 12353;//3041;
       const hiraganaEnd = 12447;//3096;
       const hiraganaContainer = document.getElementById('hiraganas');
+      const boxContainer = document.getElementById('boxes');
       blackList = []// [12353, 12355, 12357, 12359, 12361, 12387,12419,12421,12423,12430,12433,12437,12438,12439,12440,12441,12442,12443,12444,12445,12446]
 
       let newSpan = '';
-      let arr = [];
-      for(let i = hiraganaStart; i < hiraganaEnd; i++) {
-        if(!blackList.includes(i)) {
-          newSpan += `<span draggable class="dragbox box" title="${i}">&#${i};</span>`
-          arr.push({code: i, sound: '', hiragana: String.fromCharCode(i)})
-        }
-      }
-      console.log(JSON.stringify(arr));
-      hiraganaContainer.innerHTML = newSpan;
+      let dropSpan = '';
+      //let arr = [];
 
       //https://www.key-shortcut.com/en/writing-systems/%E3%81%B2%E3%82%89%E3%81%8C%E3%81%AA-japanese/
       //http://jrgraphix.net/r/Unicode/3040-309F
 
+      function allowDrop(ev) {
+        ev.preventDefault();
+      }
+
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("code");
+        if(data === ev.target.dataset.code) {
+          let hiraganaBox = document.getElementById(data);
+          ev.target.innerText = hiraganaBox.innerText;
+          ev.target.classList.add('done')
+          hiraganaBox.remove();
+        }
+      }
+
+      function drag(ev) {
+        ev.dataTransfer.setData("code", ev.target.id);
+      }
+
       let hiragana = [
-        {"code":12354,"sound":"A","hiragana":"あ"},
-        {"code":12356,"sound":"I","hiragana":"い"},
-        {"code":12358,"sound":"U","hiragana":"う"},
-        {"code":12360,"sound":"E","hiragana":"え"},
-        {"code":12362,"sound":"O","hiragana":"お"},
-        {"code":12363,"sound":"KA","hiragana":"か"},
-        {"code":12364,"sound":"GA","hiragana":"が"},
-        {"code":12365,"sound":"KI","hiragana":"き"},
-        {"code":12366,"sound":"GI","hiragana":"ぎ"},
-        {"code":12367,"sound":"KU","hiragana":"く"},
-        {"code":12368,"sound":"GU","hiragana":"ぐ"},
-        {"code":12369,"sound":"KE","hiragana":"け"},
-        {"code":12370,"sound":"GE","hiragana":"げ"},
-        {"code":12371,"sound":"KO","hiragana":"こ"},
-        {"code":12372,"sound":"GO","hiragana":"ご"},
-        {"code":12373,"sound":"SA","hiragana":"さ"},
-        {"code":12374,"sound":"ZA","hiragana":"ざ"},
-        {"code":12375,"sound":"SHI","hiragana":"し"},
-        {"code":12376,"sound":"JI","hiragana":"じ"},
-        {"code":12377,"sound":"SU","hiragana":"す"},
-        {"code":12378,"sound":"ZU","hiragana":"ず"},
-        {"code":12379,"sound":"SE","hiragana":"せ"},
-        {"code":12380,"sound":"ZE","hiragana":"ぜ"},
-        {"code":12381,"sound":"SO","hiragana":"そ"},
-        {"code":12382,"sound":"ZO","hiragana":"ぞ"},
-        {"code":12383,"sound":"TA","hiragana":"た"},
-        {"code":12384,"sound":"DA","hiragana":"だ"},
-        {"code":12385,"sound":"CHI","hiragana":"ち"},
-        {"code":12386,"sound":"JI","hiragana":"ぢ"},
-        {"code":12388,"sound":"TSU","hiragana":"つ"},
-        {"code":12389,"sound":"ZU","hiragana":"づ"},
-        {"code":12390,"sound":"TE","hiragana":"て"},
-        {"code":12391,"sound":"DE","hiragana":"で"},
-        {"code":12392,"sound":"TO","hiragana":"と"},
-        {"code":12393,"sound":"DO","hiragana":"ど"},
-        {"code":12394,"sound":"NA","hiragana":"な"},
-        {"code":12395,"sound":"NI","hiragana":"に"},
-        {"code":12396,"sound":"NU","hiragana":"ぬ"},
-        {"code":12397,"sound":"NE","hiragana":"ね"},
-        {"code":12398,"sound":"NO","hiragana":"の"},
-        {"code":12399,"sound":"HA","hiragana":"は"},
-        {"code":12400,"sound":"BA","hiragana":"ば"},
-        {"code":12401,"sound":"PA","hiragana":"ぱ"},
-        {"code":12402,"sound":"HI","hiragana":"ひ"},
-        {"code":12403,"sound":"BI","hiragana":"び"},
-        {"code":12404,"sound":"PI","hiragana":"ぴ"},
-        {"code":12405,"sound":"FU","hiragana":"ふ"},
-        {"code":12406,"sound":"BU","hiragana":"ぶ"},
-        {"code":12407,"sound":"PU","hiragana":"ぷ"},
-        {"code":12408,"sound":"HE","hiragana":"へ"},
-        {"code":12409,"sound":"BE","hiragana":"べ"},
-        {"code":12410,"sound":"PE","hiragana":"ぺ"},
-        {"code":12411,"sound":"HO","hiragana":"ほ"},
+        {"code":1,"sound":"A","hiragana":"あ"},
+        {"code":2,"sound":"I","hiragana":"い"},
+        {"code":3,"sound":"U","hiragana":"う"},
+        {"code":4,"sound":"E","hiragana":"え"},
+        {"code":5,"sound":"O","hiragana":"お"},
+        {"code":6,"sound":"KA","hiragana":"か"},
+        {"code":7,"sound":"KI","hiragana":"き"},
+        {"code":8,"sound":"KU","hiragana":"く"},
+        {"code":9,"sound":"KE","hiragana":"け"},
+        {"code":10,"sound":"KO","hiragana":"こ"},
+        {"code":11,"sound":"GA","hiragana":"が"},
+        {"code":12,"sound":"GI","hiragana":"ぎ"},
+        {"code":13,"sound":"GU","hiragana":"ぐ"},
+        {"code":14,"sound":"GE","hiragana":"げ"},
+        {"code":15,"sound":"GO","hiragana":"ご"},
+        {"code":16,"sound":"SA","hiragana":"さ"},
+        {"code":17,"sound":"SHI","hiragana":"し"},
+        {"code":18,"sound":"SU","hiragana":"す"},
+        {"code":19,"sound":"SE","hiragana":"せ"},
+        {"code":20,"sound":"SO","hiragana":"そ"},
+        {"code":21,"sound":"ZA","hiragana":"ざ"},
+        {"code":22,"sound":"JI","hiragana":"じ"},
+        {"code":23,"sound":"ZU","hiragana":"ず"},
+        {"code":24,"sound":"ZE","hiragana":"ぜ"},
+        {"code":25,"sound":"ZO","hiragana":"ぞ"},
+        {"code":26,"sound":"TA","hiragana":"た"},
+        {"code":27,"sound":"CHI","hiragana":"ち"},
+        {"code":28,"sound":"TSU","hiragana":"つ"},
+        {"code":29,"sound":"TE","hiragana":"て"},
+        {"code":30,"sound":"TO","hiragana":"と"},
+        {"code":31,"sound":"DA","hiragana":"だ"},
+        {"code":32,"sound":"JI","hiragana":"ぢ"},
+        {"code":33,"sound":"ZU","hiragana":"づ"},
+        {"code":34,"sound":"DE","hiragana":"で"},
+        {"code":35,"sound":"DO","hiragana":"ど"},
+        {"code":36,"sound":"NA","hiragana":"な"},
+        {"code":37,"sound":"NI","hiragana":"に"},
+        {"code":38,"sound":"NU","hiragana":"ぬ"},
+        {"code":39,"sound":"NE","hiragana":"ね"},
+        {"code":40,"sound":"NO","hiragana":"の"},
+        {"code":41,"sound":"HA","hiragana":"は"},
+        {"code":42,"sound":"HI","hiragana":"ひ"},
+        {"code":43,"sound":"FU","hiragana":"ふ"},
+        {"code":44,"sound":"HE","hiragana":"へ"},
+        {"code":45,"sound":"HO","hiragana":"ほ"},
+        {"code":46,"sound":"BA","hiragana":"ば"},
+        {"code":47,"sound":"BI","hiragana":"び"},
+        {"code":48,"sound":"BU","hiragana":"ぶ"},
+        {"code":49,"sound":"BE","hiragana":"べ"},
         {"code":12412,"sound":"BO","hiragana":"ぼ"},
+        {"code":12401,"sound":"PA","hiragana":"ぱ"},
+        {"code":12404,"sound":"PI","hiragana":"ぴ"},
+        {"code":12407,"sound":"PU","hiragana":"ぷ"},
+        {"code":12410,"sound":"PE","hiragana":"ぺ"},
         {"code":12413,"sound":"PO","hiragana":"ぽ"},
         {"code":12414,"sound":"MA","hiragana":"ま"},
         {"code":12415,"sound":"MI","hiragana":"み"},
@@ -146,6 +159,20 @@
         {"code":12419,"sound":"RYU","hiragana":"りゅ"},
         {"code":12419,"sound":"RYO","hiragana":"りょ"},
       ];
+
+      hiragana.forEach(item => {
+        newSpan += `<div draggable="true" id="${item.sound}" ondragstart="drag(event)" class="dragbox box" title="${item.sound}"><span>${item.hiragana}</span></div>`
+        dropSpan += `<div class="dropbox box" ondrop="drop(event)" ondragover="allowDrop(event)" data-code="${item.sound}">${item.sound}</div>`
+      })
+      // for(let i = hiraganaStart; i < hiraganaEnd; i++) {
+      //   if(!blackList.includes(i)) {
+      //     newSpan += `<span draggable="true" class="dragbox box" title="${i}">&#${i};</span>`
+      //     //arr.push({code: i, sound: '', hiragana: String.fromCharCode(i)})
+      //   }
+      // }
+      //console.log(JSON.stringify(arr));
+      hiraganaContainer.innerHTML = newSpan;
+      boxContainer.innerHTML = dropSpan;
     </script>
   </body>
 </html>

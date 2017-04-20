@@ -1,5 +1,4 @@
 .main * {
-  border: 1px solid red;
 }
 .main {
   display: flex;
@@ -9,11 +8,34 @@
 
 .container {
   flex: 1;
+  background-color: #278362;
 }
 
 .box {
   height: 2em;
-  width: 1.5em;
+  width: 2em;
+  float: left;
+  text-align: center;
+  margin: 2px;
+
+  padding: 3px;
+  border: 2px solid #999999;
+  border-radius: 5px;
+  background-color: white;
+}
+.box span {
+  position: relative;
+  top: .5em;
+}
+
+.dropbox {
+  color: #C0C0C0;
+
+}
+
+.dropbox.done {
+    color: white;
+    background-color: #7dcc7f;
 }
 
 .row  {
@@ -21,9 +43,6 @@
   flex-direction: row;
   justify-content: space-around;
 }
-.images .box {
-  float: left;
-  text-align: center;
-  margin: 2px;
-  padding: 3px;
+.images .box span {
+  top: .3em;
 }
