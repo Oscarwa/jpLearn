@@ -6,6 +6,7 @@ body  {
   display: flex;
   font-size: 3em;
   font-weight: bold;
+  margin-top: 80px;
 }
 
 .hide {
@@ -22,24 +23,36 @@ header {
   font-size: 3rem;
   color: white;
   font-weight: bold;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  left: 0;
+  top: 0;
 }
 
 button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 0 3px;
 }
 
 .restart {
-  float: right;
+  flex: 1
 }
-.mode {
-  float: left;
+.mode, .quiz {
+  flex: 1
+}
+
+#score {
+  flex: 7
 }
 
 .box {
@@ -56,7 +69,6 @@ button {
 }
 .box span {
   position: relative;
-  top: .5em;
 }
 .box i {
     font-size: 0.5em;
@@ -86,6 +98,23 @@ button {
 .dropbox.done {
     color: white;
     background-color: #7dcc7f;
+}
+.done b {
+  font-size: .3em;
+  display: block;
+}
+
+.done.w1 {
+  background-color: #f4b042;
+}
+.done.w2 {
+  background-color: #f48641;
+}
+.done.w3 {
+  background-color: #f74d2e;
+}
+.done.w4 {
+  background-color: #f72d2d;
 }
 
 .row  {

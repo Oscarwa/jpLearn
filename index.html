@@ -9,8 +9,9 @@
     <header class="container header">
       <button id="hiraganaMode" class="mode hide" onclick="mode(HIRAGANA)">Learn Hiragana</button>
       <button id="katakanaMode" class="mode hide" onclick="mode(KATAKANA)">Learn Katakana</button>
+      <button onclick="quiz()" class="hide quiz" id="quiz">Quiz</button>
       <button onclick="start(true)" id="start">Start</button>
-      <time id="time"></time>
+      <div id="score"></div>
       <button onclick="start()" class="hide restart" id="restart">Restart</button>
     </header>
     <div class="main">
@@ -55,37 +56,51 @@
 
       function drop(ev) {
         ev.preventDefault();
-        var data = ev.dataTransfer.getData("code");
+        let data = ev.dataTransfer.getData("code");
         let hiraganaBox = document.getElementById(data);
-        if(data === ev.target.dataset.code) {
-          ev.target.innerText = hiraganaBox.innerText;
+        let dropCode = ev.target.dataset.code || ev.target.parentElement.dataset.code;
+        let arrItem = hiragana.find(function(item) {
+          return item.sound === data;
+        });
+        if(data === dropCode) {
+          ev.target.innerHTML = "<b>" + dropCode + "</b>" + hiraganaBox.innerHTML;
           ev.target.classList.add('done')
+          let wClass = getTriesClass(arrItem.tries);
+          if(!!wClass) {
+            ev.target.classList.add(wClass);
+          }
           hiraganaBox.remove();
         } else {
-          let arrItem = hiragana.find(function(item) {
-            return item.sound === data;
-          });
+          
           arrItem.tries = arrItem.tries || 0;
           arrItem.tries++;
           hiraganaBox.children[1].innerText = arrItem.tries;
-          switch (arrItem.tries) {
-            case 3:
-              hiraganaBox.classList.add('w1');
-              break;
-            case 5:
-              hiraganaBox.classList.add('w2');
-              break;
-            case 7:
-              hiraganaBox.classList.add('w3');
-              break;
-            case 10:
-              hiraganaBox.classList.add('w4');
-              break;
+          let wClass = getTriesClass(arrItem.tries);
+          if(!!wClass) {
+            hiraganaBox.classList.add(wClass);
           }
         }
       }
 
       const timer = new Timer();
+
+      function getTriesClass(tries) {
+        if(tries < 3){
+          return '';
+        } else if(tries < 5) {
+          return 'w1';
+        } else if(tries < 7) {
+          return 'w2';
+        } else if(tries < 10) {
+          return 'w3';
+        } else {
+          return 'w4';
+        }
+      }
+
+      function quiz() {
+
+      }
 
       function start(firstTime) {
         if(firstTime) {
@@ -100,7 +115,7 @@
         timer.start();
         timer.removeEventListener('secondsUpdated');
         timer.addEventListener('secondsUpdated', function (e) {
-            document.getElementById('time').innerHTML = timer.getTimeValues().toString();
+            document.getElementById('score').innerHTML = timer.getTimeValues().toString();
         });
 
         hiragana.forEach(item => {
@@ -120,7 +135,8 @@
 
         document.getElementById('start').classList.add('hide');
         document.getElementById('restart').classList.remove('hide');
-        document.getElementById('time').innerHTML = '00:00:00';
+        document.getElementById('quiz').classList.remove('hide');
+        document.getElementById('score').innerHTML = '00:00:00';
       }
 
       function drag(ev) {
@@ -128,101 +144,101 @@
       }
 
       const hiragana = [
-        {"code":1,"sound":"A","hiragana":"あ", "katakana": "ア", "tries": null},
-        {"code":2,"sound":"I","hiragana":"い", "katakana": "イ", "tries": null},
-        {"code":3,"sound":"U","hiragana":"う", "katakana": "ウ", "tries": null},
-        {"code":4,"sound":"E","hiragana":"え", "katakana": "エ", "tries": null},
-        {"code":5,"sound":"O","hiragana":"お", "katakana": "オ", "tries": null},
-        {"code":6,"sound":"KA","hiragana":"か", "katakana": "カ", "tries": null},
-        {"code":7,"sound":"KI","hiragana":"き", "katakana": "キ", "tries": null},
-        {"code":8,"sound":"KU","hiragana":"く", "katakana": "ク", "tries": null},
-        {"code":9,"sound":"KE","hiragana":"け", "katakana": "ケ", "tries": null},
-        {"code":10,"sound":"KO","hiragana":"こ", "katakana": "コ", "tries": null},
-        {"code":11,"sound":"GA","hiragana":"が", "katakana": "ガ", "tries": null},
-        {"code":12,"sound":"GI","hiragana":"ぎ", "katakana": "ギ", "tries": null},
-        {"code":13,"sound":"GU","hiragana":"ぐ", "katakana": "グ", "tries": null},
-        {"code":14,"sound":"GE","hiragana":"げ", "katakana": "ゲ", "tries": null},
-        {"code":15,"sound":"GO","hiragana":"ご", "katakana": "ゴ", "tries": null},
-        {"code":16,"sound":"SA","hiragana":"さ", "katakana": "サ", "tries": null},
-        {"code":17,"sound":"SHI","hiragana":"し", "katakana": "シ", "tries": null},
-        {"code":18,"sound":"SU","hiragana":"す", "katakana": "ス", "tries": null},
-        {"code":19,"sound":"SE","hiragana":"せ", "katakana": "セ", "tries": null},
-        {"code":20,"sound":"SO","hiragana":"そ", "katakana": "ソ", "tries": null},
-        {"code":21,"sound":"ZA","hiragana":"ざ", "katakana": "ザ", "tries": null},
-        {"code":22,"sound":"JI","hiragana":"じ", "katakana": "ジ", "tries": null},
-        {"code":23,"sound":"ZU","hiragana":"ず", "katakana": "ズ", "tries": null},
-        {"code":24,"sound":"ZE","hiragana":"ぜ", "katakana": "ゼ", "tries": null},
-        {"code":25,"sound":"ZO","hiragana":"ぞ", "katakana": "ゾ", "tries": null},
-        {"code":26,"sound":"TA","hiragana":"た", "katakana": "タ", "tries": null},
-        {"code":27,"sound":"CHI","hiragana":"ち", "katakana": "チ", "tries": null},
-        {"code":28,"sound":"TSU","hiragana":"つ", "katakana": "ツ", "tries": null},
-        {"code":29,"sound":"TE","hiragana":"て", "katakana": "テ", "tries": null},
-        {"code":30,"sound":"TO","hiragana":"と", "katakana": "ト", "tries": null},
-        {"code":31,"sound":"DA","hiragana":"だ", "katakana": "ダ", "tries": null},
-        {"code":32,"sound":"JI","hiragana":"ぢ", "katakana": "ヂ", "tries": null},
-        {"code":33,"sound":"ZU","hiragana":"づ", "katakana": "ヅ", "tries": null},
-        {"code":34,"sound":"DE","hiragana":"で", "katakana": "デ", "tries": null},
-        {"code":35,"sound":"DO","hiragana":"ど", "katakana": "ド", "tries": null},
-        {"code":36,"sound":"NA","hiragana":"な", "katakana": "ナ", "tries": null},
-        {"code":37,"sound":"NI","hiragana":"に", "katakana": "ニ", "tries": null},
-        {"code":38,"sound":"NU","hiragana":"ぬ", "katakana": "ヌ", "tries": null},
-        {"code":39,"sound":"NE","hiragana":"ね", "katakana": "ネ", "tries": null},
-        {"code":40,"sound":"NO","hiragana":"の", "katakana": "ノ", "tries": null},
-        {"code":41,"sound":"HA","hiragana":"は", "katakana": "ハ", "tries": null},
-        {"code":42,"sound":"HI","hiragana":"ひ", "katakana": "ヒ", "tries": null},
-        {"code":43,"sound":"FU","hiragana":"ふ", "katakana": "フ", "tries": null},
-        {"code":44,"sound":"HE","hiragana":"へ", "katakana": "ヘ", "tries": null},
-        {"code":45,"sound":"HO","hiragana":"ほ", "katakana": "ホ", "tries": null},
-        {"code":46,"sound":"BA","hiragana":"ば", "katakana": "バ", "tries": null},
-        {"code":47,"sound":"BI","hiragana":"び", "katakana": "ビ", "tries": null},
-        {"code":48,"sound":"BU","hiragana":"ぶ", "katakana": "ブ", "tries": null},
-        {"code":49,"sound":"BE","hiragana":"べ", "katakana": "ベ", "tries": null},
-        {"code":12412,"sound":"BO","hiragana":"ぼ", "katakana": "ボ", "tries": null},
-        {"code":12401,"sound":"PA","hiragana":"ぱ", "katakana": "パ", "tries": null},
-        {"code":12404,"sound":"PI","hiragana":"ぴ", "katakana": "ピ", "tries": null},
-        {"code":12407,"sound":"PU","hiragana":"ぷ", "katakana": "プ", "tries": null},
-        {"code":12410,"sound":"PE","hiragana":"ぺ", "katakana": "ペ", "tries": null},
-        {"code":12413,"sound":"PO","hiragana":"ぽ", "katakana": "ポ", "tries": null},
-        {"code":12414,"sound":"MA","hiragana":"ま", "katakana": "マ", "tries": null},
-        {"code":12415,"sound":"MI","hiragana":"み", "katakana": "ミ", "tries": null},
-        {"code":12416,"sound":"MU","hiragana":"む", "katakana": "ム", "tries": null},
-        {"code":12417,"sound":"ME","hiragana":"め", "katakana": "メ", "tries": null},
-        {"code":12418,"sound":"MO","hiragana":"も", "katakana": "モ", "tries": null},
-        {"code":12420,"sound":"YA","hiragana":"や", "katakana": "ヤ", "tries": null},
-        {"code":12422,"sound":"YU","hiragana":"ゆ", "katakana": "ユ", "tries": null},
-        {"code":12424,"sound":"YO","hiragana":"よ", "katakana": "ヨ", "tries": null},
-        {"code":12425,"sound":"RA","hiragana":"ら", "katakana": "ラ", "tries": null},
-        {"code":12426,"sound":"RI","hiragana":"り", "katakana": "リ", "tries": null},
-        {"code":12427,"sound":"RU","hiragana":"る", "katakana": "ル", "tries": null},
-        {"code":12428,"sound":"RE","hiragana":"れ", "katakana": "レ", "tries": null},
-        {"code":12429,"sound":"RO","hiragana":"ろ", "katakana": "ロ", "tries": null},
-        {"code":12431,"sound":"WA","hiragana":"わ", "katakana": "ワ", "tries": null},
-        {"code":12434,"sound":"WO","hiragana":"を", "katakana": "ヲ", "tries": null},
-        {"code":12435,"sound":"N","hiragana":"ん", "katakana": "ン", "tries": null},
-        {"code":12419,"sound":"KYA","hiragana":"きゃ", "katakana": "キャ", "tries": null},
-        {"code":12419,"sound":"KYU","hiragana":"きゅ", "katakana": "キュ", "tries": null},
-        {"code":12419,"sound":"KYO","hiragana":"きょ", "katakana": "キョ", "tries": null},
-        {"code":12419,"sound":"GYA","hiragana":"ぎゃ", "katakana": "ギャ", "tries": null},
-        {"code":12419,"sound":"GYU","hiragana":"ぎゅ", "katakana": "ギュ", "tries": null},
-        {"code":12419,"sound":"GYO","hiragana":"ぎょ", "katakana": "ギョ", "tries": null},
-        {"code":12419,"sound":"NYA","hiragana":"にゃ", "katakana": "ニャ", "tries": null},
-        {"code":12419,"sound":"NYU","hiragana":"にゅ", "katakana": "ニュ", "tries": null},
-        {"code":12419,"sound":"NYO","hiragana":"にょ", "katakana": "ニョ", "tries": null},
-        {"code":12419,"sound":"HYA","hiragana":"ひゃ", "katakana": "ヒャ", "tries": null},
-        {"code":12419,"sound":"HYU","hiragana":"ひゅ", "katakana": "ヒュ", "tries": null},
-        {"code":12419,"sound":"HYO","hiragana":"ひょ", "katakana": "ヒョ", "tries": null},
-        {"code":12419,"sound":"BYA","hiragana":"びゃ", "katakana": "ビャ", "tries": null},
-        {"code":12419,"sound":"BYU","hiragana":"びゅ", "katakana": "ビュ", "tries": null},
-        {"code":12419,"sound":"BYO","hiragana":"びょ", "katakana": "ビョ", "tries": null},
-        {"code":12419,"sound":"PYA","hiragana":"ぴゃ", "katakana": "ピャ", "tries": null},
-        {"code":12419,"sound":"PYU","hiragana":"ぴゅ", "katakana": "ピュ", "tries": null},
-        {"code":12419,"sound":"PYO","hiragana":"ぴょ", "katakana": "ピョ", "tries": null},
-        {"code":12419,"sound":"MYA","hiragana":"みゃ", "katakana": "ミャ", "tries": null},
-        {"code":12419,"sound":"MYU","hiragana":"みゅ", "katakana": "ミュ", "tries": null},
-        {"code":12419,"sound":"MYO","hiragana":"みょ", "katakana": "ミョ", "tries": null},
-        {"code":12419,"sound":"RYA","hiragana":"りゃ", "katakana": "リャ", "tries": null},
-        {"code":12419,"sound":"RYU","hiragana":"りゅ", "katakana": "リュ", "tries": null},
-        {"code":12419,"sound":"RYO","hiragana":"りょ", "katakana": "リョ", "tries": null},
+        {"sound":"A","hiragana":"あ", "katakana": "ア", "tries": null},
+        {"sound":"I","hiragana":"い", "katakana": "イ", "tries": null},
+        {"sound":"U","hiragana":"う", "katakana": "ウ", "tries": null},
+        {"sound":"E","hiragana":"え", "katakana": "エ", "tries": null},
+        {"sound":"O","hiragana":"お", "katakana": "オ", "tries": null},
+        {"sound":"KA","hiragana":"か", "katakana": "カ", "tries": null},
+        {"sound":"KI","hiragana":"き", "katakana": "キ", "tries": null},
+        {"sound":"KU","hiragana":"く", "katakana": "ク", "tries": null},
+        {"sound":"KE","hiragana":"け", "katakana": "ケ", "tries": null},
+        {"sound":"KO","hiragana":"こ", "katakana": "コ", "tries": null},
+        {"sound":"GA","hiragana":"が", "katakana": "ガ", "tries": null},
+        {"sound":"GI","hiragana":"ぎ", "katakana": "ギ", "tries": null},
+        {"sound":"GU","hiragana":"ぐ", "katakana": "グ", "tries": null},
+        {"sound":"GE","hiragana":"げ", "katakana": "ゲ", "tries": null},
+        {"sound":"GO","hiragana":"ご", "katakana": "ゴ", "tries": null},
+        {"sound":"SA","hiragana":"さ", "katakana": "サ", "tries": null},
+        {"sound":"SHI","hiragana":"し", "katakana": "シ", "tries": null},
+        {"sound":"SU","hiragana":"す", "katakana": "ス", "tries": null},
+        {"sound":"SE","hiragana":"せ", "katakana": "セ", "tries": null},
+        {"sound":"SO","hiragana":"そ", "katakana": "ソ", "tries": null},
+        {"sound":"ZA","hiragana":"ざ", "katakana": "ザ", "tries": null},
+        {"sound":"JI","hiragana":"じ", "katakana": "ジ", "tries": null},
+        {"sound":"ZU","hiragana":"ず", "katakana": "ズ", "tries": null},
+        {"sound":"ZE","hiragana":"ぜ", "katakana": "ゼ", "tries": null},
+        {"sound":"ZO","hiragana":"ぞ", "katakana": "ゾ", "tries": null},
+        {"sound":"TA","hiragana":"た", "katakana": "タ", "tries": null},
+        {"sound":"CHI","hiragana":"ち", "katakana": "チ", "tries": null},
+        {"sound":"TSU","hiragana":"つ", "katakana": "ツ", "tries": null},
+        {"sound":"TE","hiragana":"て", "katakana": "テ", "tries": null},
+        {"sound":"TO","hiragana":"と", "katakana": "ト", "tries": null},
+        {"sound":"DA","hiragana":"だ", "katakana": "ダ", "tries": null},
+        {"sound":"JI","hiragana":"ぢ", "katakana": "ヂ", "tries": null},
+        {"sound":"ZU","hiragana":"づ", "katakana": "ヅ", "tries": null},
+        {"sound":"DE","hiragana":"で", "katakana": "デ", "tries": null},
+        {"sound":"DO","hiragana":"ど", "katakana": "ド", "tries": null},
+        {"sound":"NA","hiragana":"な", "katakana": "ナ", "tries": null},
+        {"sound":"NI","hiragana":"に", "katakana": "ニ", "tries": null},
+        {"sound":"NU","hiragana":"ぬ", "katakana": "ヌ", "tries": null},
+        {"sound":"NE","hiragana":"ね", "katakana": "ネ", "tries": null},
+        {"sound":"NO","hiragana":"の", "katakana": "ノ", "tries": null},
+        {"sound":"HA","hiragana":"は", "katakana": "ハ", "tries": null},
+        {"sound":"HI","hiragana":"ひ", "katakana": "ヒ", "tries": null},
+        {"sound":"FU","hiragana":"ふ", "katakana": "フ", "tries": null},
+        {"sound":"HE","hiragana":"へ", "katakana": "ヘ", "tries": null},
+        {"sound":"HO","hiragana":"ほ", "katakana": "ホ", "tries": null},
+        {"sound":"BA","hiragana":"ば", "katakana": "バ", "tries": null},
+        {"sound":"BI","hiragana":"び", "katakana": "ビ", "tries": null},
+        {"sound":"BE","hiragana":"べ", "katakana": "ベ", "tries": null},
+        {"sound":"BU","hiragana":"ぶ", "katakana": "ブ", "tries": null},
+        {"sound":"BO","hiragana":"ぼ", "katakana": "ボ", "tries": null},
+        {"sound":"PA","hiragana":"ぱ", "katakana": "パ", "tries": null},
+        {"sound":"PI","hiragana":"ぴ", "katakana": "ピ", "tries": null},
+        {"sound":"PU","hiragana":"ぷ", "katakana": "プ", "tries": null},
+        {"sound":"PE","hiragana":"ぺ", "katakana": "ペ", "tries": null},
+        {"sound":"PO","hiragana":"ぽ", "katakana": "ポ", "tries": null},
+        {"sound":"MA","hiragana":"ま", "katakana": "マ", "tries": null},
+        {"sound":"MI","hiragana":"み", "katakana": "ミ", "tries": null},
+        {"sound":"MU","hiragana":"む", "katakana": "ム", "tries": null},
+        {"sound":"ME","hiragana":"め", "katakana": "メ", "tries": null},
+        {"sound":"MO","hiragana":"も", "katakana": "モ", "tries": null},
+        {"sound":"YA","hiragana":"や", "katakana": "ヤ", "tries": null},
+        {"sound":"YU","hiragana":"ゆ", "katakana": "ユ", "tries": null},
+        {"sound":"YO","hiragana":"よ", "katakana": "ヨ", "tries": null},
+        {"sound":"RA","hiragana":"ら", "katakana": "ラ", "tries": null},
+        {"sound":"RI","hiragana":"り", "katakana": "リ", "tries": null},
+        {"sound":"RU","hiragana":"る", "katakana": "ル", "tries": null},
+        {"sound":"RE","hiragana":"れ", "katakana": "レ", "tries": null},
+        {"sound":"RO","hiragana":"ろ", "katakana": "ロ", "tries": null},
+        {"sound":"WA","hiragana":"わ", "katakana": "ワ", "tries": null},
+        {"sound":"WO","hiragana":"を", "katakana": "ヲ", "tries": null},
+        {"sound":"N","hiragana":"ん", "katakana": "ン", "tries": null},
+        /*{"extended": true, "sound":"KYA","hiragana":"きゃ", "katakana": "キャ", "tries": null},
+        {"extended": true, "sound":"KYU","hiragana":"きゅ", "katakana": "キュ", "tries": null},
+        {"extended": true, "sound":"KYO","hiragana":"きょ", "katakana": "キョ", "tries": null},
+        {"extended": true, "sound":"GYA","hiragana":"ぎゃ", "katakana": "ギャ", "tries": null},
+        {"extended": true, "sound":"GYU","hiragana":"ぎゅ", "katakana": "ギュ", "tries": null},
+        {"extended": true, "sound":"GYO","hiragana":"ぎょ", "katakana": "ギョ", "tries": null},
+        {"extended": true, "sound":"NYA","hiragana":"にゃ", "katakana": "ニャ", "tries": null},
+        {"extended": true, "sound":"NYU","hiragana":"にゅ", "katakana": "ニュ", "tries": null},
+        {"extended": true, "sound":"NYO","hiragana":"にょ", "katakana": "ニョ", "tries": null},
+        {"extended": true, "sound":"HYA","hiragana":"ひゃ", "katakana": "ヒャ", "tries": null},
+        {"extended": true, "sound":"HYU","hiragana":"ひゅ", "katakana": "ヒュ", "tries": null},
+        {"extended": true, "sound":"HYO","hiragana":"ひょ", "katakana": "ヒョ", "tries": null},
+        {"extended": true, "sound":"BYA","hiragana":"びゃ", "katakana": "ビャ", "tries": null},
+        {"extended": true, "sound":"BYU","hiragana":"びゅ", "katakana": "ビュ", "tries": null},
+        {"extended": true, "sound":"BYO","hiragana":"びょ", "katakana": "ビョ", "tries": null},
+        {"extended": true, "sound":"PYA","hiragana":"ぴゃ", "katakana": "ピャ", "tries": null},
+        {"extended": true, "sound":"PYU","hiragana":"ぴゅ", "katakana": "ピュ", "tries": null},
+        {"extended": true, "sound":"PYO","hiragana":"ぴょ", "katakana": "ピョ", "tries": null},
+        {"extended": true, "sound":"MYA","hiragana":"みゃ", "katakana": "ミャ", "tries": null},
+        {"extended": true, "sound":"MYU","hiragana":"みゅ", "katakana": "ミュ", "tries": null},
+        {"extended": true, "sound":"MYO","hiragana":"みょ", "katakana": "ミョ", "tries": null},
+        {"extended": true, "sound":"RYA","hiragana":"りゃ", "katakana": "リャ", "tries": null},
+        {"extended": true, "sound":"RYU","hiragana":"りゅ", "katakana": "リュ", "tries": null},
+        {"extended": true, "sound":"RYO","hiragana":"りょ", "katakana": "リョ", "tries": null},*/
       ];
 
       
