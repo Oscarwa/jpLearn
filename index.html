@@ -9,15 +9,13 @@
     <header class="container header">
       <button id="hiraganaMode" class="mode hide" onclick="mode(HIRAGANA)">Learn Hiragana</button>
       <button id="katakanaMode" class="mode hide" onclick="mode(KATAKANA)">Learn Katakana</button>
-      <button onclick="quiz()" class="hide quiz" id="quiz">Quiz</button>
+      <button id="quiz" onclick="quiz()" class="mode hide quiz">Quiz</button>
       <button onclick="start(true)" id="start">Start</button>
       <div id="score"></div>
       <button onclick="start()" class="hide restart" id="restart">Restart</button>
     </header>
-    <div class="main">
+    <div class="main hor">
       <div id="boxes" class="container boxes">
-        <div class="row">
-        </div>
       </div>
       <div id="hiraganas" class="container images">
       </div>
@@ -30,6 +28,7 @@
       const boxContainer = document.getElementById('boxes');
       const HIRAGANA = 'hiragana';
       const KATAKANA = 'katakana';
+      const QUIZ = 'quiz';
       let currentMode = HIRAGANA;
 
       //https://www.key-shortcut.com/en/writing-systems/%E3%81%B2%E3%82%89%E3%81%8C%E3%81%AA-japanese/
@@ -45,13 +44,22 @@
           case HIRAGANA:
             document.getElementById('hiraganaMode').classList.add('hide');
             document.getElementById('katakanaMode').classList.remove('hide');
+            document.getElementsByClassName('main')[0].classList.remove('hor');
+            start();        
             break;
           case KATAKANA:
             document.getElementById('hiraganaMode').classList.remove('hide');
             document.getElementById('katakanaMode').classList.add('hide');
+            document.getElementsByClassName('main')[0].classList.remove('hor');
+            start();
+            break;
+          case QUIZ:
+            document.getElementById('hiraganaMode').classList.add('hide');
+            document.getElementById('katakanaMode').classList.remove('hide');
+            document.getElementsByClassName('main')[0].classList.add('hor');
+            quiz();
             break;
         }
-        start();
       }
 
       function drop(ev) {
@@ -98,8 +106,49 @@
         }
       }
 
+      let quizCopy;
+      let quizAns;
+      let score = 0;
       function quiz() {
+        quizCopy = hiragana.slice();
+        quizAns = hiragana.slice();
+        if(timer.isRunning) {
+          timer.stop();
+        }
+        score = 0;
+        quizLoop();
 
+      }
+
+      function quizLoop() {
+        document.getElementById('score').innerHTML = score + '';
+        let rnd = Math.floor(Math.random() * quizCopy.length);
+        let item = quizCopy[rnd];
+        let newSpan = `<div id="${item.sound}" class="dragbox box big" title="${item.sound}"><span>${currentMode == HIRAGANA ? item.hiragana : item.katakana}</span></div>`
+        quizCopy.splice(rnd, 1);
+        boxContainer.innerHTML = newSpan;
+
+        let answers = [];
+        for(let i = 1; i <= 4; i++) {
+          let rnd = Math.floor(Math.random() * quizAns.length);
+          let item = quizAns[rnd];
+          answers.push(`<div id="${item.sound}" onclick="answer(false, this)" class="dragbox box" title="${item.sound}"><span>${item.sound}</span></div>`);
+        }
+        rnd = Math.floor(Math.random() * 4);
+        answers.splice(rnd, 0, `<div id="correct" onclick="answer(true, this)" class="dragbox box correct" title="${item.sound}"><span>${item.sound}</span></div>`)
+        hiraganaContainer.innerHTML = answers.join('');
+      }
+
+      function answer(real, elem) {
+        if(real) {
+          score += 100;
+          elem.classList.add('dropbox', 'done');
+        } else {
+          score -= 20;
+          elem.classList.add('dropbox', 'done', 'w4');
+          document.getElementById('correct').classList.add('dropbox', 'done');     
+        }
+        setTimeout(quizLoop, 1000);
       }
 
       function start(firstTime) {
