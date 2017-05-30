@@ -14,7 +14,7 @@
       <div id="score"></div>
       <button onclick="start()" class="hide restart" id="restart">Restart</button>
     </header>
-    <div class="main hor">
+    <div class="main">
       <div id="boxes" class="container boxes">
       </div>
       <div id="hiraganas" class="container images">
@@ -44,19 +44,16 @@
           case HIRAGANA:
             document.getElementById('hiraganaMode').classList.add('hide');
             document.getElementById('katakanaMode').classList.remove('hide');
-            document.getElementsByClassName('main')[0].classList.remove('hor');
             start();        
             break;
           case KATAKANA:
             document.getElementById('hiraganaMode').classList.remove('hide');
             document.getElementById('katakanaMode').classList.add('hide');
-            document.getElementsByClassName('main')[0].classList.remove('hor');
             start();
             break;
           case QUIZ:
             document.getElementById('hiraganaMode').classList.add('hide');
             document.getElementById('katakanaMode').classList.remove('hide');
-            document.getElementsByClassName('main')[0].classList.add('hor');
             quiz();
             break;
         }
@@ -115,6 +112,7 @@
         if(timer.isRunning) {
           timer.stop();
         }
+        document.getElementsByClassName('main')[0].classList.add('hor');
         score = 0;
         quizLoop();
 
@@ -152,6 +150,7 @@
       }
 
       function start(firstTime) {
+        document.getElementsByClassName('main')[0].classList.remove('hor');
         if(firstTime) {
           document.getElementById('hiraganaMode').classList.add('hide');
           document.getElementById('katakanaMode').classList.remove('hide');
